@@ -21,21 +21,11 @@ def get_file_extension(filepath):
     _, extension = os.path.splitext(filepath)
     return extension
 
-def walk_directory (dirpath : str):
+def walk_directory (dirpath : str, mapping_data):
     for root, dirs, files in os.walk(dirpath):
-        # Current directory
-        print(f"Current directory: {root}")
-        # Print all available directories 
-        print(f"Directories at current level: {dirs}")
-        # Files at current level 
-        print(f"Files in current directory: {files}")
-
-        for f in files:
-            print(f"File extension: {get_file_extension(f)}")
-
-# Option to 
-
-# Check to see if the folders already exist 
+        for file in files: 
+            media_type = classify_file(file, mapping_data)
+            print(f"{file} is of type {media_type}.")
 
 # Create the mapping folders 
 def create_mapping_folders (mappings_dict, parent_dir: str = '.'):
@@ -45,6 +35,20 @@ def create_mapping_folders (mappings_dict, parent_dir: str = '.'):
         target_dir = f"{parent_dir}/{name}"
         os.makedirs(target_dir, exist_ok=False)
 
+
+def classify_file (filepath, mapping_dictionary):
+    file_extention = get_file_extension(filepath)
+    
+    media_type = "Other"
+    for media, extensions in mapping_dictionary.items():
+        if file_extention in extensions:
+            media_type = media 
+            break 
+
+    return media_type
+
+
+test_dir = "../Data-Science-Topics"
 if file_mappings:
     mappings_data = file_mappings["media_mappings"]
-    create_mapping_folders(mappings_data)
+    walk_directory(test_dir, mappings_data)

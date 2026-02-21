@@ -3,7 +3,7 @@
         "Images": [".jpg", ".jpeg", ".png", ".gif", ".svg", ".webp", ".avif", ".bmp", ".tiff"],
         "Videos": [".mp4", ".webm", ".ogv", ".mov", ".avi", ".mkv", ".flv", ".wmv"],
         "Audio": [".mp3", ".wav", ".ogg", ".aac", ".flac", ".m4a", ".opus", ".wma"],
-        "Scripts": [".js", ".ts", ".py", ".sh", ".rb", ".php", ".pl", ".sql", ".bat", ".c", ".cpp"],
+        "Scripts": [".js", ".ts", ".py", ".sh", ".rb", ".php", ".pl", ".sql", ".bat", ".c", ".cpp", "ipynb"],
         "Documents": [".pdf", ".doc", ".docx", ".txt", ".rtf", ".odt", ".pages"],
         "Data": [".json", ".xml", ".csv", ".yaml", ".yml", ".jsonld"],
         "Web": [".html", ".htm", ".xhtml", ".css", ".scss", ".less"],
