@@ -17,8 +17,6 @@ def read_file_mappings (filepath : str):
 mapping_directory = "./mapping.json"
 file_mappings = read_file_mappings(mapping_directory)
 
-print(file_mappings)
-
 def get_file_extension(filepath):
     _, extension = os.path.splitext(filepath)
     return extension
@@ -35,5 +33,18 @@ def walk_directory (dirpath : str):
         for f in files:
             print(f"File extension: {get_file_extension(f)}")
 
+# Option to 
 
-walk_directory("/home/darkii/Takeout")
+# Check to see if the folders already exist 
+
+# Create the mapping folders 
+def create_mapping_folders (mappings_dict, parent_dir: str = '.'):
+    folder_names = mappings_dict.keys()
+    print(folder_names)
+    for name in folder_names:
+        target_dir = f"{parent_dir}/{name}"
+        os.makedirs(target_dir, exist_ok=False)
+
+if file_mappings:
+    mappings_data = file_mappings["media_mappings"]
+    create_mapping_folders(mappings_data)
