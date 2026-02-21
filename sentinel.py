@@ -3,6 +3,8 @@ Main script
 '''
 import json 
 import os 
+import shutil
+import argparse  
 
 def read_file_mappings (filepath : str):
     try: 
@@ -27,13 +29,19 @@ def walk_directory (dirpath : str, mapping_data):
             media_type = classify_file(file, mapping_data)
             print(f"{file} is of type {media_type}.")
 
+class DirAlreadyExistsException(Exception):
+    """Exception raised when a directory with the same name exists already"""
+
 # Create the mapping folders 
 def create_mapping_folders (mappings_dict, parent_dir: str = '.'):
     folder_names = mappings_dict.keys()
-    print(folder_names)
+    dir_folders = os.listdir()
     for name in folder_names:
-        target_dir = f"{parent_dir}/{name}"
-        os.makedirs(target_dir, exist_ok=False)
+        target_dir = os.path.join(parent_dir, name)
+        if name not in dir_folders:
+            os.makedirs(target_dir, exist_ok=True)
+        else:
+            raise DirAlreadyExistsException(f"The directory with name '{name}' already exists")
 
 
 def classify_file (filepath, mapping_dictionary):
@@ -47,6 +55,11 @@ def classify_file (filepath, mapping_dictionary):
 
     return media_type
 
+def move_file(source, destination, copy=False):
+    if copy:
+        shutil.copyfile(src=source, dst=destination)
+    else: 
+        shutil.move(src=source, dst=destination)
 
 test_dir = "../Data-Science-Topics"
 if file_mappings:
