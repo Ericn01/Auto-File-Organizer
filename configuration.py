@@ -1,11 +1,10 @@
 import os 
 import json 
-from default_argconfig import DEFAULT_ARG_CONFIG
-
+from constants import DEFAULT_ARG_CONFIG
 
 ARG_CONFIG_PATH = "./args.json"
 
-def load_arg_config(filepath: str = ARG_CONFIG_PATH) -> list[dict]:
+def load_arg_config(filepath: str = ARG_CONFIG_PATH) -> dict[str, list[dict]]:
     """Load argument config from JSON, writing defaults if the file doesn't exist."""
     if not os.path.exists(filepath):
         print(f"No config file found at '{filepath}'. Creating default config.")
@@ -23,7 +22,8 @@ def load_arg_config(filepath: str = ARG_CONFIG_PATH) -> list[dict]:
     
 
 
-def save_arg_config(config: list[dict], filepath: str = ARG_CONFIG_PATH) -> None:
+def save_arg_config(config: dict[str, list[dict]] , 
+                    filepath: str = ARG_CONFIG_PATH) -> None:
     """Persist the argument config list to JSON."""
     with open(filepath, 'w') as f:
         json.dump(config, f, indent=4)
@@ -41,12 +41,15 @@ def update_arg_config(dest: str, key: str, value, filepath: str = ARG_CONFIG_PAT
     """
     config = load_arg_config(filepath)
     matched = False
-    for entry in config:
-        if entry.get("dest") == dest:
-            entry[key] = value
-            matched = True
-            break
+    for group in config.values():
+        for entry in group:
+            if entry.get("dest") == dest:
+                entry[key] = value
+                matched = True
+                break
     if not matched:
         raise KeyError(f"No argument with dest='{dest}' found in config.")
     save_arg_config(config, filepath)
     print(f"Updated '{dest}.{key}' → {value!r}")
+
+

@@ -1,4 +1,4 @@
-DEFAULT_ARG_CONFIG = {
+DEFAULT_ARG_CONFIG : dict[str, list[dict]] = {
     "run": [
         {
             "flag":    "--mapping",
@@ -82,4 +82,12 @@ DEFAULT_ARG_CONFIG = {
             "help":    "Print all current default values and exit."
         },
     ]
+}
+
+TYPE_MAP = {
+    "str":  str,
+    "int":  int,
+    "float": float,
+    "bool": None,   
+    "list": str,  
 }

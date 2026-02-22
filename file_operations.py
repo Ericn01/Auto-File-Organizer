@@ -168,3 +168,37 @@ def walk_directory (dirpath : str, mapping_data, output_dir: str, copy: bool = F
             action = "Copying" if copy else "Moving"
             print(f"{action} '{file}' → {media_type}/")
             move_file(source_path, destination_path, copy=copy)
+
+
+def handle_run(args, arg_config: dict):
+    """Handle the 'run' subcommand — filter, create folders, and walk the directory."""
+    file_mappings = read_file_mappings(args.mapping)
+    if not file_mappings:
+        print("No mappings loaded. Exiting.")
+        return
+
+    mappings_data = file_mappings.get("media_mappings", {})
+
+    mappings_data = filter_mapping_categories(
+        mappings_data,
+        include_categories=getattr(args, "include_categories", None),
+        exclude_categories=getattr(args, "exclude_categories", None),
+    )
+
+    create_mapping_folders(
+        mappings_data,
+        parent_dir=args.output_dir,
+        strict=False,
+        include_other=True,
+    )
+
+    walk_directory(
+        dirpath=args.source_dir,
+        mapping_data=mappings_data,
+        output_dir=args.output_dir,
+        copy=args.copy,
+        max_depth=args.max_depth,
+        min_size=args.min_size,
+        max_size=args.max_size,
+        ignore_extensions=args.ignore_extensions,
+    )
