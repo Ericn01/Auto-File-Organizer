@@ -6,16 +6,10 @@ A command-line tool that automatically organises files in a directory into categ
 
 ## Demo
 
-<!-- Demo video will go here -->
-> 🎬 *Insert demo video here*
-
----
-
-## Requirements
-
-- Python 3.10 or higher
-- No external packages required. Only Python's built-in standard library is used
-
+<video width="320" height="240" controls>
+  <source src="https://www.youtube.com/watch?v=kfzUY_VLy4M" type="video/mp4" alt="Project Demo Video">
+  Your browser does not support the video tag.
+</video>
 ---
 
 ## Project Structure
@@ -70,7 +64,7 @@ This will scan `./Downloads` and move all files into categorised subfolders insi
 
 ---
 
-## 🔧 Options
+## Options
 
 Add any of these flags to customise how the tool runs:
 
@@ -83,14 +77,14 @@ Add any of these flags to customise how the tool runs:
 | `--ignore-extensions` | Skip files with these extensions | `--ignore-extensions .tmp .log` |
 | `--mapping PATH` | Use a custom mapping file (default: `./mapping.json`) | `--mapping ./my_map.json` |
 
-**Example — copy only files between 1 KB and 10 MB, ignoring temp files:**
+**Example: copy only files between 1 KB and 10 MB, ignoring temp files:**
 ```bash
 python main.py ./Downloads ./Sorted --copy --min-size 1024 --max-size 10485760 --ignore-extensions .tmp .log
 ```
 
 ---
 
-## 💾 Saving Your Preferred Settings
+## Saving Your Preferred Settings
 
 Instead of typing the same flags every time, you can save them as new defaults to `args.json`.
 
