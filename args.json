@@ -1,46 +1,44 @@
-{
-    "default_arg_config": [
-        {
-            "flag": "--mapping",
-            "dest": "mapping",
-            "type": "str",
-            "default": "./mapping.json",
-            "help": "Path to the JSON file containing extension mappings"
-        },
-        {
-            "flag":    "--copy",
-            "dest":    "copy",
-            "type":    "bool",
-            "default": false,
-            "help":    "Copy files instead of moving them."
-        },
-        {
-            "flag":    "--max-depth",
-            "dest":    "max_depth",
-            "type":    "int",
-            "default": null,
-            "help":    "Maximum directory depth to recurse into (default: unlimited)."
-        },
-        {
-            "flag":    "--min-size",
-            "dest":    "min_size",
-            "type":    "int",
-            "default": null,
-            "help":    "Minimum file size in bytes to include (default: no limit)."
-        },
-        {
-            "flag":    "--max-size",
-            "dest":    "max_size",
-            "type":    "int",
-            "default": null,
-            "help":    "Maximum file size in bytes to include (default: no limit)."
-        },
-        {
-            "flag":    "--ignore-extensions",
-            "dest":    "ignore_extensions",
-            "type":    "list",
-            "default": null,
-            "help":    "File extensions to ignore, e.g. --ignore-extensions .tmp .log"
-        }
-    ]
-}
+[
+    {
+        "flag": "--mapping",
+        "dest": "mapping",
+        "type": "str",
+        "default": "./mapping.json",
+        "help": "Path to the JSON file containing extension mappings."
+    },
+    {
+        "flag": "--copy",
+        "dest": "copy",
+        "type": "bool",
+        "default": false,
+        "help": "Copy files instead of moving them."
+    },
+    {
+        "flag": "--max-depth",
+        "dest": "max_depth",
+        "type": "int",
+        "default": null,
+        "help": "Maximum directory depth to recurse into (default: unlimited)."
+    },
+    {
+        "flag": "--min-size",
+        "dest": "min_size",
+        "type": "int",
+        "default": null,
+        "help": "Minimum file size in bytes to include (default: no limit)."
+    },
+    {
+        "flag": "--max-size",
+        "dest": "max_size",
+        "type": "int",
+        "default": null,
+        "help": "Maximum file size in bytes to include (default: no limit)."
+    },
+    {
+        "flag": "--ignore-extensions",
+        "dest": "ignore_extensions",
+        "type": "list",
+        "default": null,
+        "help": "File extensions to ignore, e.g. --ignore-extensions .tmp .log"
+    }
+]

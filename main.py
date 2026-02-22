@@ -1,42 +1,43 @@
 '''
 Main script
 '''
-import json 
-import os 
-import shutil
+import file_operations
+import parser_builder
+import configuration
 
-def read_json (filepath : str):
-    try: 
-        with open(filepath, 'r') as file:
-            data = json.load(file)
-            return data 
-    except FileNotFoundError:
-        print(f"Error: The file {filepath} could not be found!")
-    except json.JSONDecodeError as e:
-        print(f"Error: Failed to parse JSON: {e}")
+def coerce_value(raw_value: str, data_type: str = "str"):
+    if raw_value is None:
+        return None
 
+    match data_type:
+        case "int":
+            return int(raw_value)
+        case "float":
+            return float(raw_value)
+        case "bool":
+            if isinstance(raw_value, bool):
+                return raw_value
+            return str(raw_value).strip().lower() in ("true", "1", "yes", "y", "on")
+        case "list":
+            text = str(raw_value).strip()
+            if not text:
+                return []
+            parts = text.split(",") if "," in text else text.split()
+            return [p.strip() for p in parts if p.strip()]
+        case _:
+            return raw_value
 
-
-
-
-
-
-
-
-
-
-def main():
-    arg_config = read_json()
-    parser = build_parser(arg_config)
+def main(): 
+    arg_config = configuration.load_arg_config()
+    parser = parser_builder.build_parser(arg_config)
     args = parser.parse_args()
 
-    # --- Config management commands (exit early, no file sorting needed) --- #
-
-    if args.reset_config:
-        # save_arg_config(DEFAULT_ARG_CONFIG)
-        print("Config reset to defaults.")
-        return
-
+    # Config management commands
+    if args.reset_config: 
+        configuration.save_arg_config(configuration.DEFAULT_ARG_CONFIG)
+        print("Config reset to defaults")
+        return 
+    
     if args.set_default:
         raw_dest_key, raw_value = args.set_default
         if '.' not in raw_dest_key:
@@ -48,33 +49,26 @@ def main():
         coerced_value = raw_value
         for entry in arg_config:
             if entry.get("dest") == dest:
-                data_type = entry.get("type", "str")
-                if data_type == "int":
-                    coerced_value = int(raw_value)
-                elif data_type == "float":
-                    coerced_value = float(raw_value)
-                elif data_type == "bool":
-                    coerced_value = raw_value.lower() in ("true", "1", "yes")
-                elif data_type == "list":
-                    coerced_value = raw_value.split(',')
+                coerced_value = coerce_value(raw_value, entry.get("type", "str"))
                 break
-
-        # update_arg_config(dest, key, coerced_value)
-        return
-    
-    file_mappings = read_json(args.mapping)
+                
+        configuration.update_arg_config(dest, key, coerced_value)
+        return 
+    file_mappings = file_operations.read_file_mappings(args.mapping)
     if not file_mappings:
-        print("No mappings loaded — exiting.")
+        print("No mappings loaded. Exiting.")
         return
 
     mappings_data = file_mappings["media_mappings"]
 
-    try:
-        create_mapping_folders(mappings_data, parent_dir=args.output_dir)
-    except DirAlreadyExistsException as e:
-        print(f"Warning: {e} Continuing with existing folders.")
+    file_operations.create_mapping_folders(
+        mappings_data,
+        parent_dir=args.output_dir,
+        strict=False,
+        include_other=True,
+    )
 
-    walk_directory(
+    file_operations.walk_directory(
         dirpath=args.source_dir,
         mapping_data=mappings_data,
         output_dir=args.output_dir,
@@ -86,6 +80,5 @@ def main():
     )
 
 
-
-
-test_dir = "../Data-Science-Topics"
+if __name__ == "__main__":
+    main()

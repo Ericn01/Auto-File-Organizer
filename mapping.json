@@ -5,52 +5,8 @@
         "Audio": [".mp3", ".wav", ".ogg", ".aac", ".flac", ".m4a", ".opus", ".wma"],
         "Scripts": [".js", ".ts", ".py", ".sh", ".rb", ".php", ".pl", ".sql", ".bat", ".c", ".cpp", "ipynb"],
         "Documents": [".pdf", ".doc", ".docx", ".txt", ".rtf", ".odt", ".pages"],
-        "Data": [".json", ".xml", ".csv", ".yaml", ".yml", ".jsonld"],
+        "Data": [".json", ".xml", ".csv", ".yaml", ".yml", ".xlsx", ".jsonld"],
         "Web": [".html", ".htm", ".xhtml", ".css", ".scss", ".less"],
         "Archives": [".zip", ".tar", ".gz", ".7z", ".rar", ".bz2"]
-    },
-    "default_arg_config": [
-        {
-            "flag": "--mapping",
-            "dest": "mapping",
-            "type": "str",
-            "default": "./mapping.json",
-            "help": "Path to the JSON file containing extension mappings"
-        },
-        {
-            "flag":    "--copy",
-            "dest":    "copy",
-            "type":    "bool",
-            "default": false,
-            "help":    "Copy files instead of moving them."
-        },
-        {
-            "flag":    "--max-depth",
-            "dest":    "max_depth",
-            "type":    "int",
-            "default": null,
-            "help":    "Maximum directory depth to recurse into (default: unlimited)."
-        },
-        {
-            "flag":    "--min-size",
-            "dest":    "min_size",
-            "type":    "int",
-            "default": null,
-            "help":    "Minimum file size in bytes to include (default: no limit)."
-        },
-        {
-            "flag":    "--max-size",
-            "dest":    "max_size",
-            "type":    "int",
-            "default": null,
-            "help":    "Maximum file size in bytes to include (default: no limit)."
-        },
-        {
-            "flag":    "--ignore-extensions",
-            "dest":    "ignore_extensions",
-            "type":    "list",
-            "default": null,
-            "help":    "File extensions to ignore, e.g. --ignore-extensions .tmp .log"
-        }
-    ]
+    }
 }

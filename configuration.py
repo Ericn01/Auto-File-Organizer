@@ -51,15 +51,15 @@ ARG_CONFIG_PATH = "./args.json"
 def load_arg_config(filepath: str = ARG_CONFIG_PATH) -> list[dict]:
     """Load argument config from JSON, writing defaults if the file doesn't exist."""
     if not os.path.exists(filepath):
-        print(f"No config file found at '{filepath}' — creating default config.")
+        print(f"No config file found at '{filepath}'. Creating default config.")
         save_arg_config(DEFAULT_ARG_CONFIG, filepath)
         return DEFAULT_ARG_CONFIG
 
     try:
         with open(filepath, 'r') as f:
-            config = json.load(f)
+            config_data = json.load(f)
         print(f"Loaded argument config from '{filepath}'.")
-        return config
+        return config_data
     except json.JSONDecodeError as e:
         print(f"Error: Failed to decode '{filepath}': {e}. Falling back to defaults.")
         return DEFAULT_ARG_CONFIG

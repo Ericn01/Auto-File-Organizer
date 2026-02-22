@@ -16,9 +16,26 @@ def build_parser(arg_config: list[dict]):
     parser.add_argument("source_dir", help="Path to the directory to scan.")
     parser.add_argument("output_dir", help="Path to the directory where sorted subfolders will be created.")
 
+    # Config management options used by main.py
+    parser.add_argument(
+        "--reset-config",
+        dest="reset_config",
+        action="store_true",
+        default=False,
+        help="Reset args.json to defaults and exit.",
+    )
+    parser.add_argument(
+        "--set-default",
+        dest="set_default",
+        nargs=2,
+        default=None,
+        metavar=("DEST.KEY", "VALUE"),
+        help="Update args.json: set a config entry field (e.g. max_depth.default 2) and exit.",
+    )
+
     for entry in arg_config:
-        flag = entry["flag"],
-        dest = entry["dest"],
+        flag = entry["flag"]
+        dest = entry["dest"]
         data_type = entry.get("type", "str")
         default = entry.get("default")
         help_msg = entry.get("help", "")
