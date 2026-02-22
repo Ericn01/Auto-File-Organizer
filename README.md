@@ -69,6 +69,8 @@ Add any of these flags to customise how the tool runs:
 | Flag | Description | Example |
 |---|---|---|
 | `--copy` | Copy files instead of moving them | `--copy` |
+| `--include-categories CATEGORY [CATEGORY ...]` | Only use specific categories from `mapping.json` (unknown categories warn) | `--include-categories Images Videos` |
+| `--exclude-categories CATEGORY [CATEGORY ...]` | Exclude specific categories from `mapping.json` (unknown categories warn) | `--exclude-categories Archives` |
 | `--max-depth N` | Only search N levels deep (default: unlimited) | `--max-depth 2` |
 | `--min-size N` | Skip files smaller than N bytes | `--min-size 1024` |
 | `--max-size N` | Skip files larger than N bytes | `--max-size 10485760` |
@@ -89,20 +91,20 @@ Instead of typing the same flags every time, you can save them as new defaults t
 Use the `--set-default` flag followed by the setting name and value:
 
 ```bash
-python main.py <source_dir> <output_dir> --set-default <setting.field> <value>
+python main.py --set-default <setting.field> <value>
 ```
 
 **Examples:**
 
 ```bash
 # Always copy files instead of moving them
-python main.py ./src ./out --set-default copy.default true
+python main.py --set-default copy.default true
 
 # Set a default minimum file size of 1 KB
-python main.py ./src ./out --set-default min_size.default 1024
+python main.py --set-default min_size.default 1024
 
 # Set a default max search depth of 3 levels
-python main.py ./src ./out --set-default max_depth.default 3
+python main.py --set-default max_depth.default 3
 ```
 
 Once saved, those values will be used automatically on every future run — unless you override them with a flag in the command.
@@ -125,7 +127,7 @@ Once saved, those values will be used automatically on every future run — unle
 If your `args.json` config gets into a messy state, you can wipe it and start fresh:
 
 ```bash
-python main.py <source_dir> <output_dir> --reset-config
+python main.py --reset-config
 ```
 
 This restores all settings to their original out-of-the-box values.
@@ -154,4 +156,3 @@ The output folder already has a subfolder with that category name from a previou
 Check that your `source_dir` path is correct and that the files you expect to be sorted have extensions listed in your `mapping.json`.
 
 ---
-
