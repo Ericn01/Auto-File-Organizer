@@ -1,50 +1,7 @@
 import os 
 import json 
+from default_argconfig import DEFAULT_ARG_CONFIG
 
-DEFAULT_ARG_CONFIG = [
-    {
-        "flag":    "--mapping",
-        "dest":    "mapping",
-        "type":    "str",
-        "default": "./mapping.json",
-        "help":    "Path to the JSON file containing extension mappings."
-    },
-    {
-        "flag":    "--copy",
-        "dest":    "copy",
-        "type":    "bool",
-        "default": False,
-        "help":    "Copy files instead of moving them."
-    },
-    {
-        "flag":    "--max-depth",
-        "dest":    "max_depth",
-        "type":    "int",
-        "default": None,
-        "help":    "Maximum directory depth to recurse into (default: unlimited)."
-    },
-    {
-        "flag":    "--min-size",
-        "dest":    "min_size",
-        "type":    "int",
-        "default": None,
-        "help":    "Minimum file size in bytes to include (default: no limit)."
-    },
-    {
-        "flag":    "--max-size",
-        "dest":    "max_size",
-        "type":    "int",
-        "default": None,
-        "help":    "Maximum file size in bytes to include (default: no limit)."
-    },
-    {
-        "flag":    "--ignore-extensions",
-        "dest":    "ignore_extensions",
-        "type":    "list",
-        "default": None,
-        "help":    "File extensions to ignore, e.g. --ignore-extensions .tmp .log"
-    },
-]
 
 ARG_CONFIG_PATH = "./args.json"
 

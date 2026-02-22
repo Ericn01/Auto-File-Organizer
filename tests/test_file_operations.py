@@ -35,9 +35,9 @@ class TestFileOperations(unittest.TestCase):
             "Images": [".jpg", ".png"],
             "Docs": ["txt"],
         }
-        self.assertEqual(file_operations.classify_file("PHOTO.JPG", mappings), "Images")
-        self.assertEqual(file_operations.classify_file("readme.txt", mappings), "Docs")
-        self.assertEqual(file_operations.classify_file("noext", mappings), "Other")
+        self.assertEqual(file_operations.classify_file_extension("PHOTO.JPG", mappings), "Images")
+        self.assertEqual(file_operations.classify_file_extension("readme.txt", mappings), "Docs")
+        self.assertEqual(file_operations.classify_file_extension("noext", mappings), "Other")
 
     def test_create_mapping_folders_strict_raises(self):
         with self._temp_dir() as tmp:
@@ -129,6 +129,28 @@ class TestFileOperations(unittest.TestCase):
             )
             self.assertTrue((output / "Other" / "file.unknown").exists())
 
+    def test_filter_mapping_categories_include_and_exclude_with_warnings(self):
+        mapping = {"Images": [".jpg"], "Videos": [".mp4"], "Docs": [".txt"]}
+        warnings: list[str] = []
+
+        filtered = file_operations.filter_mapping_categories(
+            mapping,
+            include_categories=["images", "Missing"],
+            exclude_categories=["Videos", "also-missing"],
+            warn=warnings.append,
+        )
+        self.assertEqual(set(filtered.keys()), {"Images"})
+        self.assertTrue(any("include category 'Missing'" in w for w in warnings))
+        self.assertTrue(any("exclude category 'also-missing'" in w for w in warnings))
+
+    def test_filter_mapping_categories_supports_comma_separated_values(self):
+        mapping = {"Images": [".jpg"], "Videos": [".mp4"], "Docs": [".txt"]}
+        filtered = file_operations.filter_mapping_categories(
+            mapping,
+            include_categories=["Images,Videos"],
+        )
+        self.assertEqual(set(filtered.keys()), {"Images", "Videos"})
+
     @staticmethod
     def _temp_dir():
         # Small context manager wrapper to keep tests pathlib-only and readable.
@@ -141,4 +163,3 @@ class TestFileOperations(unittest.TestCase):
                 yield Path(d)
 
         return _ctx()
-

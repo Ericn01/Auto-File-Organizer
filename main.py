@@ -52,14 +52,30 @@ def main():
                 coerced_value = coerce_value(raw_value, entry.get("type", "str"))
                 break
                 
-        configuration.update_arg_config(dest, key, coerced_value)
+        try:
+            configuration.update_arg_config(dest, key, coerced_value)
+        except KeyError as e:
+            print(f"Error: {e}")
         return 
+
+    if not args.source_dir or not args.output_dir:
+        print("Error: source_dir and output_dir are required unless using --reset-config or --set-default.")
+        parser.print_help()
+        return
+
     file_mappings = file_operations.read_file_mappings(args.mapping)
     if not file_mappings:
         print("No mappings loaded. Exiting.")
         return
 
-    mappings_data = file_mappings["media_mappings"]
+    mappings_data = file_mappings.get("media_mappings", {})
+
+    # Filtered mapping data if include_categories or exclude_categories is applied.
+    mappings_data = file_operations.filter_mapping_categories(
+        mappings_data,
+        include_categories=getattr(args, "include_categories", None),
+        exclude_categories=getattr(args, "exclude_categories", None),
+    )
 
     file_operations.create_mapping_folders(
         mappings_data,
