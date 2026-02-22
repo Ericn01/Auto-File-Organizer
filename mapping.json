@@ -5,7 +5,7 @@
         "Audio": [".mp3", ".wav", ".ogg", ".aac", ".flac", ".m4a", ".opus", ".wma"],
         "Scripts": [".js", ".ts", ".py", ".sh", ".rb", ".php", ".pl", ".sql", ".bat", ".c", ".cpp", "ipynb"],
         "Documents": [".pdf", ".doc", ".docx", ".txt", ".rtf", ".odt", ".pages"],
-        "Data": [".json", ".xml", ".csv", ".yaml", ".yml", ".xlsx", ".jsonld"],
+        "Data": [".json", ".xml", ".csv", ".yaml", ".yml", ".xlsx", ".jsonld", ".db"],
         "Web": [".html", ".htm", ".xhtml", ".css", ".scss", ".less"],
         "Archives": [".zip", ".tar", ".gz", ".7z", ".rar", ".bz2"]
     }
