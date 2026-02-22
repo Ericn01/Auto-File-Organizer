@@ -2,13 +2,11 @@
 
 A command-line tool that automatically organises files in a directory into categorised subfolders based on their type. By default this includes categories like Images, Videos, Documents, and so on. The mappings for the categories to file extensions are defined in `mapping.json` and can be modified as needed. You can move or copy files, filter by size, limit how deep it searches, and ignore specific file types. All of your preferred settings are saved to a config file so you don't have to re-type them every time.
 
----
 
 ## Demo Video
 
 [![Alt text for the image](https://img.youtube.com/vi/kfzUY_VLy4M/0.jpg)](https://www.youtube.com/watch?v=kfzUY_VLy4M "Automatic File Organizer Script Showcase")
 
----
 
 ## Project Structure
 
@@ -19,7 +17,6 @@ auto-file-organizer/
 └── args.json         # Your saved default settings (auto-created on first run)
 ```
 
----
 
 ## Setting Up Your Mapping File
 
@@ -40,12 +37,29 @@ Before running the tool, make sure you have a `mapping.json` file in the same fo
 
 You can add, remove, or rename any of the categories and extensions to suit your needs. Any file whose extension isn't listed will be placed in an **Other** folder automatically.
 
----
 
-## Basic Usage
+## Usage Overview
+
+The tool has two subcommands. Use `run` to sort files, and `config` to manage your saved settings:
 
 ```bash
-python main.py <source_dir> <output_dir>
+python main.py run <source_dir> <output_dir> [options]
+python main.py config [options]
+```
+
+You can always add `--help` to either subcommand to see a full list of its options:
+
+```bash
+python main.py run --help
+python main.py config --help
+```
+
+## The `run` Subcommand
+
+This is the command that actually moves or copies your files.
+
+```bash
+python main.py run   [options]
 ```
 
 | Argument | Description |
@@ -53,14 +67,103 @@ python main.py <source_dir> <output_dir>
 | `source_dir` | The folder you want to sort (e.g. `./Downloads`) |
 | `output_dir` | The folder where sorted subfolders will be created (e.g. `./Sorted`) |
 
-**Example — sort your Downloads folder:**
+### Run Options
+
+| Flag | Description |
+|---|---|
+| `--copy` | Copy files instead of moving them (original files are left in place) |
+| `--mapping PATH` | Use a custom mapping file (default: `./mapping.json`) |
+| `--max-depth N` | Only search N levels of subfolders deep (default: unlimited) |
+| `--min-size N` | Skip files smaller than N bytes |
+| `--max-size N` | Skip files larger than N bytes |
+| `--ignore-extensions .x .y` | Skip any files with these extensions |
+| `--include-categories A B` | Only sort these categories. Everything else is ignored |
+| `--exclude-categories A B` | Sort everything except these categories |
+
+### Examples
+
+**1. Sort your Downloads folder (move mode):**
 ```bash
-python main.py ./Downloads ./Sorted
+python main.py run ./Downloads ./Sorted
 ```
 
-This will scan `./Downloads` and move all files into categorised subfolders inside `./Sorted`.
+**2. Copy files instead of moving them:**
+```bash
+python main.py run ./Downloads ./Sorted --copy
+```
 
----
+**3. Only search 2 levels deep, and skip files smaller than 1 KB:**
+```bash
+python main.py run ./Downloads ./Sorted --max-depth 2 --min-size 1024
+```
+
+**4. Copy files between 1 KB and 10 MB, skipping temp and log files:**
+```bash
+python main.py run ./Downloads ./Sorted --copy --min-size 1024 --max-size 10485760 --ignore-extensions .tmp .log
+```
+
+**5. Only sort Images, Videos, and Audio. Ignore everything else:**
+```bash
+python main.py run ./Downloads ./Sorted --include-categories Images Videos Audio
+```
+
+**6. Sort everything except Archives and System files:**
+```bash
+python main.py run ./Downloads ./Sorted --exclude-categories Archives System
+```
+
+## The `config` Subcommand
+
+Use this to view and update the default settings saved in `args.json`. Changes made here apply automatically to every future `run` — no need to retype flags each time.
+
+```bash
+python main.py config [options]
+```
+
+### Config Options
+
+| Flag | Description |
+|---|---|
+| `--list` | Print all current saved defaults |
+| `--set-default DEST.KEY VALUE` | Update a single setting and save it |
+| `--reset` | Wipe `args.json` and restore all built-in defaults |
+
+### Examples
+
+**See all your current saved defaults:**
+```bash
+python main.py config --list
+```
+
+**Always copy files instead of moving them:**
+```bash
+python main.py config --set-default copy.default true
+```
+
+**Set a default minimum file size of 1 KB (1024 bytes):**
+```bash
+python main.py config --set-default min_size.default 1024
+```
+
+**Set a default maximum file size of 10 MB:**
+```bash
+python main.py config --set-default max_size.default 10485760
+```
+
+**Limit search depth to 3 levels by default:**
+```bash
+python main.py config --set-default max_depth.default 3
+```
+
+**Change the default mapping file path:**
+```bash
+python main.py config --set-default mapping.default ./my_custom_mapping.json
+```
+
+**Reset everything back to factory defaults:**
+```bash
+python main.py config --reset
+```
 
 ## Options
 
@@ -82,57 +185,6 @@ Add any of these flags to customise how the tool runs:
 python main.py ./Downloads ./Sorted --copy --min-size 1024 --max-size 10485760 --ignore-extensions .tmp .log
 ```
 
----
-
-## Saving Your Preferred Settings
-
-Instead of typing the same flags every time, you can save them as new defaults to `args.json`.
-
-Use the `--set-default` flag followed by the setting name and value:
-
-```bash
-python main.py --set-default <setting.field> <value>
-```
-
-**Examples:**
-
-```bash
-# Always copy files instead of moving them
-python main.py --set-default copy.default true
-
-# Set a default minimum file size of 1 KB
-python main.py --set-default min_size.default 1024
-
-# Set a default max search depth of 3 levels
-python main.py --set-default max_depth.default 3
-```
-
-Once saved, those values will be used automatically on every future run — unless you override them with a flag in the command.
-
-### Available Setting Names
-
-| Setting Name | What It Controls |
-|---|---|
-| `copy.default` | Whether to copy instead of move (`true` / `false`) |
-| `max_depth.default` | How many folder levels deep to search |
-| `min_size.default` | Minimum file size in bytes |
-| `max_size.default` | Maximum file size in bytes |
-| `ignore_extensions.default` | Comma-separated list of extensions to skip |
-| `mapping.default` | Path to the mapping JSON file |
-
----
-
-## Resetting to Default Settings
-
-If your `args.json` config gets into a messy state, you can wipe it and start fresh:
-
-```bash
-python main.py --reset-config
-```
-
-This restores all settings to their original out-of-the-box values.
-
----
 
 ## How It Works
 
@@ -142,17 +194,4 @@ This restores all settings to their original out-of-the-box values.
 4. **It walks through your source directory**, checks each file against your filters (size, extension, depth), and moves or copies it into the right subfolder.
 5. **Files that don't match any category** are placed in an `Other` subfolder.
 
----
 
-## Troubleshooting
-
-**"The file mapping.json could not be found"**
-Make sure `mapping.json` exists in the same directory as `main.py`, or pass a custom path using `--mapping`.
-
-**"The directory '...' already exists"**
-The output folder already has a subfolder with that category name from a previous run. The tool will continue using it; this is expected behaviour and not an error.
-
-**Files aren't being moved**
-Check that your `source_dir` path is correct and that the files you expect to be sorted have extensions listed in your `mapping.json`.
-
----
