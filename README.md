@@ -4,12 +4,10 @@ A command-line tool that automatically organises files in a directory into categ
 
 ---
 
-## Demo
+## Demo Video
 
-<video width="320" height="240" controls>
-  <source src="https://www.youtube.com/watch?v=kfzUY_VLy4M" type="video/mp4" alt="Project Demo Video">
-  Your browser does not support the video tag.
-</video>
+[![Alt text for the image](https://img.youtube.com/vi/kfzUY_VLy4M/0.jpg)](https://www.youtube.com/watch?v=kfzUY_VLy4M "Automatic File Organizer Script Showcase")
+
 ---
 
 ## Project Structure
@@ -33,9 +31,9 @@ Before running the tool, make sure you have a `mapping.json` file in the same fo
         "Images":    [".jpg", ".jpeg", ".png", ".gif", ".webp"],
         "Videos":    [".mp4", ".mov", ".avi", ".mkv"],
         "Audio":     [".mp3", ".wav", ".flac", ".aac"],
+        "Programming":      [".py", ".js", ".html", ".css", ".json"],
         "Documents": [".pdf", ".docx", ".txt", ".xlsx", ".csv"],
-        "Code":      [".py", ".js", ".html", ".css", ".json"],
-        "Archives":  [".zip", ".tar", ".gz", ".rar"]
+        "Spreadsheets": [".csv", ".xlsx", ".xls", ".ods", ".numbers", ".tsv"]
     }
 }
 ```

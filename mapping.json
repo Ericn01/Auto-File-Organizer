@@ -1,12 +1,19 @@
 {
     "media_mappings": {
-        "Images": [".jpg", ".jpeg", ".png", ".gif", ".svg", ".webp", ".avif", ".bmp", ".tiff"],
-        "Videos": [".mp4", ".webm", ".ogv", ".mov", ".avi", ".mkv", ".flv", ".wmv"],
-        "Audio": [".mp3", ".wav", ".ogg", ".aac", ".flac", ".m4a", ".opus", ".wma"],
-        "Scripts": [".js", ".ts", ".py", ".sh", ".rb", ".php", ".pl", ".sql", ".bat", ".c", ".cpp", "ipynb"],
-        "Documents": [".pdf", ".doc", ".docx", ".txt", ".rtf", ".odt", ".pages"],
-        "Data": [".json", ".xml", ".csv", ".yaml", ".yml", ".xlsx", ".jsonld", ".db"],
-        "Web": [".html", ".htm", ".xhtml", ".css", ".scss", ".less"],
-        "Archives": [".zip", ".tar", ".gz", ".7z", ".rar", ".bz2"]
+        "Images": [".jpg", ".jpeg", ".png", ".gif", ".svg", ".webp", ".avif", ".bmp", ".tiff", ".heic", ".ico", ".raw"],
+        "Videos": [".mp4", ".webm", ".ogv", ".mov", ".avi", ".mkv", ".flv", ".wmv", ".m4v", ".mpg", ".mpeg"],
+        "Audio": [".mp3", ".wav", ".ogg", ".aac", ".flac", ".m4a", ".opus", ".wma", ".mid", ".midi"],
+        "Programming": [".js", ".ts", ".py", ".sh", ".rb", ".php", ".pl", ".sql", ".bat", ".c", ".cpp", ".ipynb", ".java", ".go", ".rs", ".swift", ".kt", ".cs", ".h", ".m"],
+        "Documents": [".pdf", ".doc", ".docx", ".txt", ".rtf", ".odt", ".pages", ".md", ".tex", ".wpd"],
+        "Spreadsheets": [".csv", ".xlsx", ".xls", ".ods", ".numbers", ".tsv"],
+        "Presentations": [".pptx", ".ppt", ".key", ".odp"],
+        "Data": [".json", ".xml", ".yaml", ".yml", ".jsonld", ".db", ".sqlite", ".sqlitedb", ".proto"],
+        "Web": [".html", ".htm", ".xhtml", ".css", ".scss", ".less", ".js", ".php"],
+        "Archives": [".zip", ".tar", ".gz", ".7z", ".rar", ".bz2", ".iso", ".dmg", ".pkg"],
+        "Design": [".psd", ".ai", ".xd", ".fig", ".sketch", ".indd", ".dwg", ".dxf", ".stl", ".obj", ".blend"],
+        "EBooks": [".epub", ".mobi", ".azw3", ".fb2"],
+        "Fonts": [".ttf", ".otf", ".woff", ".woff2", ".eot"],
+        "Executables": [".exe", ".msi", ".bin", ".app", ".deb", ".rpm"],
+        "System": [".log", ".bak", ".tmp", ".ini", ".cfg", ".config", ".env", ".dll", ".sys"]
     }
 }
