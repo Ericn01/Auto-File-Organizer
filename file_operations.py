@@ -52,12 +52,12 @@ def filter_mapping_categories(
     warn=print,
 ):
     """
-    Filter mapping categories (mapping.json keys) for a run.
+        Filter mapping categories (mapping.json keys) for a run.
 
-    - include_categories keeps only specified existing categories.
-    - exclude_categories removes specified existing categories.
-    - Unknown categories emit warnings and are ignored.
-    - If both are provided, include is applied first, then exclude.
+        - include_categories keeps only specified existing categories.
+        - exclude_categories removes specified existing categories.
+        - Unknown categories emit warnings and are ignored.
+        - If both are provided, include is applied first, then exclude.
     """
     include_categories = _flatten_category_args(include_categories)
     exclude_categories = _flatten_category_args(exclude_categories)
@@ -109,11 +109,13 @@ def classify_file_extension (filepath, mapping_dictionary):
 class DirAlreadyExistsException(Exception):
     """Exception raised when a directory with the same name exists already"""
 
-
 # Create the mapping folders 
-def create_mapping_folders(mappings_dict, parent_dir: str = '.', strict: bool = True, include_other: bool = False):
+def create_mapping_folders(mappings_dict, parent_dir: str = '.', strict: bool = True, include_other: bool = True):
     folder_names = list(mappings_dict.keys())
-    if include_other and "Other" not in folder_names:
+
+    add_other_folder = include_other and ("Other" not in folder_names)
+    print(add_other_folder)
+    if add_other_folder:
         folder_names.append("Other")
 
     os.makedirs(parent_dir, exist_ok=True)
@@ -122,7 +124,7 @@ def create_mapping_folders(mappings_dict, parent_dir: str = '.', strict: bool = 
         target_dir = os.path.join(parent_dir, name)
         if os.path.exists(target_dir):
             if strict:
-                raise DirAlreadyExistsException(f"The directory with name '{name}' already exists")
+                raise DirAlreadyExistsException(f"The directory '{name}' already exists")
             continue
         os.makedirs(target_dir, exist_ok=True)
 
@@ -133,9 +135,13 @@ def move_file(source : str, destination : str, copy=False):
         shutil.move(src=source, dst=destination)
 
 
+def print_action(filename : str, target_dir : str, action : str = "Moving"):
+    action_string = f"{action.title()} '{filename}' → {target_dir}/"
+    print(action_string)
+
 def walk_directory (dirpath : str, mapping_data, output_dir: str, copy: bool = False, 
                     max_depth: int | None = None, min_size : int | None = None, max_size: int | None = None, 
-                    ignore_extensions: list | None = None):
+                    ignore_extensions: list | None = None,  include_other : bool = True):
     
     ignore_extensions = [_normalize_extension(ext) for ext in (ignore_extensions or [])]
     base_depth = dirpath.rstrip(os.sep).count(os.sep)
@@ -163,42 +169,15 @@ def walk_directory (dirpath : str, mapping_data, output_dir: str, copy: bool = F
                 continue  
 
             media_type = classify_file_extension(file, mapping_data)
+
+            # Skip files that didn't match any category if include_other is false
+            if media_type == "Other" and not include_other:
+                print(f"Skipping '{file}' (no matching category).")
+                continue
+
             destination_path = os.path.join(output_dir, media_type, file)
             os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+
             action = "Copying" if copy else "Moving"
-            print(f"{action} '{file}' → {media_type}/")
+            #print_action(file, media_type, action)
             move_file(source_path, destination_path, copy=copy)
-
-
-def handle_run(args, arg_config: dict):
-    """Handle the 'run' subcommand — filter, create folders, and walk the directory."""
-    file_mappings = read_file_mappings(args.mapping)
-    if not file_mappings:
-        print("No mappings loaded. Exiting.")
-        return
-
-    mappings_data = file_mappings.get("media_mappings", {})
-
-    mappings_data = filter_mapping_categories(
-        mappings_data,
-        include_categories=getattr(args, "include_categories", None),
-        exclude_categories=getattr(args, "exclude_categories", None),
-    )
-
-    create_mapping_folders(
-        mappings_data,
-        parent_dir=args.output_dir,
-        strict=False,
-        include_other=True,
-    )
-
-    walk_directory(
-        dirpath=args.source_dir,
-        mapping_data=mappings_data,
-        output_dir=args.output_dir,
-        copy=args.copy,
-        max_depth=args.max_depth,
-        min_size=args.min_size,
-        max_size=args.max_size,
-        ignore_extensions=args.ignore_extensions,
-    )

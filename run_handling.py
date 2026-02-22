@@ -55,6 +55,10 @@ def handle_run(args):
 
     mappings_data = file_mappings.get("media_mappings", {})
 
+    # If the user has narrowed the run to specific categories, there is no meaningful "Other" category; unrecognised files are simply left alone.
+    category_filter_active = bool(args.include_categories or args.exclude_categories)
+    include_other = not category_filter_active
+
     mappings_data = file_operations.filter_mapping_categories(
         mappings_data,
         include_categories=getattr(args, "include_categories", None),
@@ -65,7 +69,7 @@ def handle_run(args):
         mappings_data,
         parent_dir=args.output_dir,
         strict=False,
-        include_other=True,
+        include_other=include_other,
     )
 
     file_operations.walk_directory(
@@ -77,4 +81,5 @@ def handle_run(args):
         min_size=args.min_size,
         max_size=args.max_size,
         ignore_extensions=args.ignore_extensions,
+        include_other=include_other
     )
