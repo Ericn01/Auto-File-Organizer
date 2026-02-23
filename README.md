@@ -5,7 +5,7 @@ A command-line tool that automatically organises files in a directory into categ
 
 ## Demo Video
 
-[![Alt text for the image](https://img.youtube.com/vi/kfzUY_VLy4M/0.jpg)](https://www.youtube.com/watch?v=kfzUY_VLy4M "Automatic File Organizer Script Showcase")
+[![Automatic File Organizer Video Thumbnail](https://img.youtube.com/vi/kfzUY_VLy4M/0.jpg)](https://www.youtube.com/watch?v=kfzUY_VLy4M "Automatic File Organizer Script Showcase")
 
 
 ## Project Structure
@@ -114,7 +114,7 @@ python main.py run ./Downloads ./Sorted --exclude-categories Archives System
 
 ## The `config` Subcommand
 
-Use this to view and update the default settings saved in `args.json`. Changes made here apply automatically to every future `run` — no need to retype flags each time.
+Use this to view and update the default settings saved in `args.json`. Changes made here apply automatically to every future `run`.
 
 ```bash
 python main.py config [options]

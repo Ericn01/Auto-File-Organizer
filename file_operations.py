@@ -134,6 +134,24 @@ def move_file(source : str, destination : str, copy=False):
     else: 
         shutil.move(src=source, dst=destination)
 
+def _next_available_path(destination_path: str) -> str:
+    """
+    If destination_path exists, return a new path by appending a '(n)' suffix
+    before the extension (1-based) until an unused name is found.
+    """
+    if not os.path.exists(destination_path):
+        return destination_path
+
+    directory, filename = os.path.split(destination_path)
+    stem, ext = os.path.splitext(filename)
+
+    counter = 1
+    while True:
+        candidate = os.path.join(directory, f"{stem}({counter}){ext}")
+        if not os.path.exists(candidate):
+            return candidate
+        counter += 1
+
 
 def print_action(filename : str, target_dir : str, action : str = "Moving"):
     action_string = f"{action.title()} '{filename}' → {target_dir}/"
@@ -141,12 +159,12 @@ def print_action(filename : str, target_dir : str, action : str = "Moving"):
 
 def walk_directory (dirpath : str, mapping_data, output_dir: str, copy: bool = False, 
                     max_depth: int | None = None, min_size : int | None = None, max_size: int | None = None, 
-                    ignore_extensions: list | None = None,  include_other : bool = True):
+                    ignore_extensions: list | None = None, skip_duplicates: bool = False, include_other : bool = True):
     
     ignore_extensions = [_normalize_extension(ext) for ext in (ignore_extensions or [])]
     base_depth = dirpath.rstrip(os.sep).count(os.sep)
     for root, dirs, files in os.walk(dirpath):
-        if max_depth: 
+        if max_depth is not None: 
             current_depth = root.rstrip(os.sep).count(os.sep) - base_depth 
             if current_depth >= max_depth:
                 dirs.clear()
@@ -177,6 +195,12 @@ def walk_directory (dirpath : str, mapping_data, output_dir: str, copy: bool = F
 
             destination_path = os.path.join(output_dir, media_type, file)
             os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+
+            if os.path.exists(destination_path):
+                if skip_duplicates:
+                    print(f"Skipping '{file}' (already exists in destination).")
+                    continue
+                destination_path = _next_available_path(destination_path)
 
             action = "Copying" if copy else "Moving"
             #print_action(file, media_type, action)

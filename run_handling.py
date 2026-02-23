@@ -81,5 +81,6 @@ def handle_run(args):
         min_size=args.min_size,
         max_size=args.max_size,
         ignore_extensions=args.ignore_extensions,
+        skip_duplicates=args.skip_duplicates,
         include_other=include_other
     )

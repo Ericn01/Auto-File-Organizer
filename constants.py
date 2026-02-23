@@ -15,6 +15,13 @@ DEFAULT_ARG_CONFIG : dict[str, list[dict]] = {
             "help":    "Copy files instead of moving them."
         },
         {
+            "flag":    "--skip-duplicates",
+            "dest":    "skip_duplicates",
+            "type":    "bool",
+            "default": False,
+            "help":    "Skip files when the destination name already exists (default: keep all by renaming with a numbered suffix, e.g. file(1).txt)."
+        },
+        {
             "flag":    "--max-depth",
             "dest":    "max_depth",
             "type":    "int",
