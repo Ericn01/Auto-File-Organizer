@@ -129,6 +129,27 @@ class TestFileOperations(unittest.TestCase):
             )
             self.assertTrue((output / "Other" / "file.unknown").exists())
 
+    def test_walk_directory_creates_only_encountered_category_folders(self):
+        with self._temp_dir() as tmp:
+            source = tmp / "source"
+            output = tmp / "output"
+            source.mkdir()
+            output.mkdir()
+
+            (source / "a.jpg").write_bytes(b"1234")
+            mapping = {"Images": [".jpg"], "Docs": [".txt"]}
+
+            file_operations.walk_directory(
+                dirpath=str(source),
+                mapping_data=mapping,
+                output_dir=str(output),
+                copy=True,
+            )
+
+            self.assertTrue((output / "Images").is_dir())
+            self.assertTrue((output / "Images" / "a.jpg").exists())
+            self.assertFalse((output / "Docs").exists())
+
     def test_walk_directory_renames_duplicates_by_default(self):
         with self._temp_dir() as tmp:
             source = tmp / "source"

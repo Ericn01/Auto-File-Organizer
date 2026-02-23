@@ -10,8 +10,6 @@ def _add_entry_to_parser(parser, entry: dict):
     help_msg  = entry.get("help", "")
 
     if data_type == "bool":
-        # BooleanOptionalAction provides both --flag and --no-flag, allowing users
-        # to override a saved default either way.
         parser.add_argument(
             flag,
             dest=dest,

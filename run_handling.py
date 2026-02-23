@@ -2,6 +2,7 @@ import configuration
 import file_operations
 from constants import DEFAULT_ARG_CONFIG
 from utils import coerce_value
+import os
 
 def handle_config(args, arg_config: dict) -> bool:
     """
@@ -65,12 +66,8 @@ def handle_run(args):
         exclude_categories=getattr(args, "exclude_categories", None),
     )
 
-    file_operations.create_mapping_folders(
-        mappings_data,
-        parent_dir=args.output_dir,
-        strict=False,
-        include_other=include_other,
-    )
+    # Create the output directory upfront, but create category folders lazily only when a valid (unskipped) file is actually written there.
+    os.makedirs(args.output_dir, exist_ok=True)
 
     file_operations.walk_directory(
         dirpath=args.source_dir,

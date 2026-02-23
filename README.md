@@ -7,10 +7,9 @@ A command-line tool that automatically organises files in a directory into categ
 
 1. **On first run**, the tool creates an `args.json` file containing all the default settings.
 2. **It reads `mapping.json`** to learn which file extensions map to which category names.
-3. **It creates a subfolder** for each category inside your output directory.
+3. **It creates subfolders lazily** inside your output directory only when a matching (unskipped) file is encountered.
 4. **It walks through your source directory**, checks each file against your filters (size, extension, depth), and moves or copies it into the right subfolder.
 5. **Files that don't match any category** are placed in an `Other` subfolder.
-
 
 
 ## Demo Video
@@ -86,8 +85,8 @@ python main.py run   [options]
 | `--include-categories CATEGORY [CATEGORY ...]` | Only use specific categories from `mapping.json` (unknown categories warn) | `--include-categories Images Videos` |
 | `--exclude-categories CATEGORY [CATEGORY ...]` | Exclude specific categories from `mapping.json` (unknown categories warn) | `--exclude-categories Archives` |
 | `--max-depth N` | Only search N levels deep (default: unlimited) | `--max-depth 2` |
-| `--min-size N` | Skip files smaller than N bytes | `--min-size 1024` |
-| `--max-size N` | Skip files larger than N bytes | `--max-size 10485760` |
+| `--min-size N` | Skip files smaller than N (KB, MB, GB) | `--min-size 10KB` |
+| `--max-size N` | Skip files larger than N (KB, MB, GB) | `--max-size 2.5GB` |
 | `--ignore-extensions` | Skip files with these extensions | `--ignore-extensions .tmp .log` |
 | `--mapping PATH` | Use a custom mapping file (default: `./mapping.json`) | `--mapping ./my_map.json` |
 | `--skip-duplicates` | Skip files when the destination filename already exists | `--skip-duplicates` |
@@ -101,7 +100,7 @@ python main.py run ./Downloads ./Sorted
 
 **Copy only files between 1 KB and 10 MB, ignoring temp files:**
 ```bash
-python main.py run ./Downloads ./Sorted --copy --min-size 1024 --max-size 10485760 --ignore-extensions .tmp .log
+python main.py run ./Downloads ./Sorted --copy --min-size 1KB --max-size 10MB --ignore-extensions .tmp .log
 ```
 
 **Only sort Images, Videos, and Audio. Ignore everything else:**
@@ -133,13 +132,12 @@ python main.py config [options]
 python main.py config --set-default copy.default true
 ```
 
-**Set a default minimum file size of 1 KB (1024 bytes):**
+**Set a default minimum file size of 1 KB:**
 ```bash
-python main.py config --set-default min_size.default 1024
+python main.py config --set-default min_size.default 1KB
 ```
 
 **Change the default mapping file path:**
 ```bash
 python main.py config --set-default mapping.default ./my_custom_mapping.json
 ```
-

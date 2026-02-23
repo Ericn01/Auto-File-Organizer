@@ -1,4 +1,5 @@
 import os 
+from utils import parse_size
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -38,14 +39,14 @@ DEFAULT_ARG_CONFIG : dict[str, list[dict]] = {
         {
             "flag":    "--min-size",
             "dest":    "min_size",
-            "type":    "int",
+            "type":    "file_size",
             "default": None,
             "help":    "Minimum file size in bytes to include (default: no limit)."
         },
         {
             "flag":    "--max-size",
             "dest":    "max_size",
-            "type":    "int",
+            "type":    "file_size",
             "default": None,
             "help":    "Maximum file size in bytes to include (default: no limit)."
         },
@@ -104,4 +105,5 @@ TYPE_MAP = {
     "float": float,
     "bool": None,   
     "list": str,  
+    "file_size": parse_size # Parses size strings (10MB, 1B)
 }
