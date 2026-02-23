@@ -1,11 +1,9 @@
 # Automatic File Organizer
----
 
 A command-line tool that automatically organises files in a directory into categorised subfolders based on their type. By default this includes categories like Images, Videos, Documents, and so on. The mappings for the categories to file extensions are defined in `mapping.json` and can be modified as needed. You can move or copy files, filter by size, limit how deep it searches, and ignore specific file types. All of your preferred settings are saved to a config file so you don't have to re-type them every time.
 
 
 ## How It Works
----
 
 1. **On first run**, the tool creates an `args.json` file containing all the default settings.
 2. **It reads `mapping.json`** to learn which file extensions map to which category names.
@@ -16,13 +14,11 @@ A command-line tool that automatically organises files in a directory into categ
 
 
 ## Demo Video
----
 
 [![Automatic File Organizer Video Thumbnail](https://img.youtube.com/vi/kfzUY_VLy4M/0.jpg)](https://www.youtube.com/watch?v=kfzUY_VLy4M "Automatic File Organizer Script Showcase")
 
 
 ## Project Structure
----
 
 ```
 auto-file-organizer/
@@ -33,7 +29,6 @@ auto-file-organizer/
 
 
 ## Setting Up Your Mapping File
----
 
 Before running the tool, make sure you have a `mapping.json` file in the same folder as `main.py`. This file tells the tool how to categorise files. Here's an example:
 
@@ -54,7 +49,6 @@ You can add, remove, or rename any of the categories and extensions to suit your
 
 
 ## Usage Overview
----
 
 The tool has two subcommands. Use `run` to sort files, and `config` to manage your saved settings:
 
@@ -83,8 +77,8 @@ python main.py run   [options]
 | `source_dir` | The folder you want to sort (e.g. `./Downloads`) |
 | `output_dir` | The folder where sorted subfolders will be created (e.g. `./Sorted`) |
 
-## The `run` Subcommand
----
+### Run Options
+
 
 | Flag | Description | Example |
 |---|---|---|
@@ -116,7 +110,7 @@ python main.py run ./Downloads ./Sorted --include-categories Images Videos Audio
 ```
 
 ## The `config` Subcommand
----
+
 
 Use this to view and update the default settings saved in `args.json`. Changes made here apply automatically to every future `run`.
 
@@ -148,6 +142,4 @@ python main.py config --set-default min_size.default 1024
 ```bash
 python main.py config --set-default mapping.default ./my_custom_mapping.json
 ```
-
----
 
