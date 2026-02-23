@@ -129,6 +129,62 @@ class TestFileOperations(unittest.TestCase):
             )
             self.assertTrue((output / "Other" / "file.unknown").exists())
 
+    def test_walk_directory_renames_duplicates_by_default(self):
+        with self._temp_dir() as tmp:
+            source = tmp / "source"
+            output = tmp / "output"
+            source.mkdir()
+            output.mkdir()
+
+            (source / "a.jpg").write_bytes(b"1234")
+            mapping = {"Images": [".jpg"]}
+            file_operations.create_mapping_folders(mapping, parent_dir=str(output), strict=False, include_other=True)
+
+            # First run creates a.jpg; second run should create a(1).jpg
+            file_operations.walk_directory(
+                dirpath=str(source),
+                mapping_data=mapping,
+                output_dir=str(output),
+                copy=True,
+            )
+            file_operations.walk_directory(
+                dirpath=str(source),
+                mapping_data=mapping,
+                output_dir=str(output),
+                copy=True,
+            )
+
+            self.assertTrue((output / "Images" / "a.jpg").exists())
+            self.assertTrue((output / "Images" / "a(1).jpg").exists())
+
+    def test_walk_directory_skips_duplicates_when_enabled(self):
+        with self._temp_dir() as tmp:
+            source = tmp / "source"
+            output = tmp / "output"
+            source.mkdir()
+            output.mkdir()
+
+            (source / "a.jpg").write_bytes(b"1234")
+            mapping = {"Images": [".jpg"]}
+            file_operations.create_mapping_folders(mapping, parent_dir=str(output), strict=False, include_other=True)
+
+            file_operations.walk_directory(
+                dirpath=str(source),
+                mapping_data=mapping,
+                output_dir=str(output),
+                copy=True,
+            )
+            file_operations.walk_directory(
+                dirpath=str(source),
+                mapping_data=mapping,
+                output_dir=str(output),
+                copy=True,
+                skip_duplicates=True,
+            )
+
+            self.assertTrue((output / "Images" / "a.jpg").exists())
+            self.assertFalse((output / "Images" / "a(1).jpg").exists())
+
     def test_filter_mapping_categories_include_and_exclude_with_warnings(self):
         mapping = {"Images": [".jpg"], "Videos": [".mp4"], "Docs": [".txt"]}
         warnings: list[str] = []

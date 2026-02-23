@@ -179,10 +179,11 @@ Add any of these flags to customise how the tool runs:
 | `--max-size N` | Skip files larger than N bytes | `--max-size 10485760` |
 | `--ignore-extensions` | Skip files with these extensions | `--ignore-extensions .tmp .log` |
 | `--mapping PATH` | Use a custom mapping file (default: `./mapping.json`) | `--mapping ./my_map.json` |
+| `--skip-duplicates` | Skip files when the destination filename already exists | `--skip-duplicates` |
 
 **Example: copy only files between 1 KB and 10 MB, ignoring temp files:**
 ```bash
-python main.py ./Downloads ./Sorted --copy --min-size 1024 --max-size 10485760 --ignore-extensions .tmp .log
+python main.py run ./Downloads ./Sorted --copy --min-size 1024 --max-size 10485760 --ignore-extensions .tmp .log
 ```
 
 
@@ -193,5 +194,4 @@ python main.py ./Downloads ./Sorted --copy --min-size 1024 --max-size 10485760 -
 3. **It creates a subfolder** for each category inside your output directory.
 4. **It walks through your source directory**, checks each file against your filters (size, extension, depth), and moves or copies it into the right subfolder.
 5. **Files that don't match any category** are placed in an `Other` subfolder.
-
 

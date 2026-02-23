@@ -1,9 +1,7 @@
 import os 
 import json 
 from copy import deepcopy
-from constants import DEFAULT_ARG_CONFIG
-
-ARG_CONFIG_PATH = "./args.json"
+from constants import DEFAULT_ARG_CONFIG, ARG_CONFIG_PATH
 
 def _merge_missing_defaults(current: object, defaults: dict[str, list[dict]]) -> tuple[dict[str, list[dict]], bool]:
     """
@@ -89,8 +87,9 @@ def update_arg_config(dest: str, key: str, value, filepath: str = ARG_CONFIG_PAT
                 entry[key] = value
                 matched = True
                 break
+        if matched:
+            break
     if not matched:
         raise KeyError(f"No argument with dest='{dest}' found in config.")
     save_arg_config(config, filepath)
     print(f"Updated '{dest}.{key}' → {value!r}")
-

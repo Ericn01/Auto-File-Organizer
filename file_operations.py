@@ -114,7 +114,6 @@ def create_mapping_folders(mappings_dict, parent_dir: str = '.', strict: bool = 
     folder_names = list(mappings_dict.keys())
 
     add_other_folder = include_other and ("Other" not in folder_names)
-    print(add_other_folder)
     if add_other_folder:
         folder_names.append("Other")
 
@@ -179,10 +178,10 @@ def walk_directory (dirpath : str, mapping_data, output_dir: str, copy: bool = F
             source_path = os.path.join(root, file)
             file_size = os.path.getsize(source_path)
 
-            if min_size and (file_size < min_size): 
+            if min_size is not None and (file_size < min_size): 
                 print(f"Skipping {file} (size {file_size}B below minimum {min_size}B).")
                 continue
-            if max_size and (file_size > max_size): 
+            if max_size is not None and (file_size > max_size): 
                 print(f"Skipping {file} (size {file_size}B above maximum {max_size}B).")
                 continue  
 

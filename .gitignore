@@ -2,7 +2,11 @@
 __pycache__/
 *.py[codz]
 *$py.class
+
+# Other
 example-test
+args.json
+
 # Distribution / packaging
 .Python
 build/

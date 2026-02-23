@@ -10,7 +10,15 @@ def _add_entry_to_parser(parser, entry: dict):
     help_msg  = entry.get("help", "")
 
     if data_type == "bool":
-        parser.add_argument(flag, dest=dest, action="store_true", default=default, help=help_msg)
+        # BooleanOptionalAction provides both --flag and --no-flag, allowing users
+        # to override a saved default either way.
+        parser.add_argument(
+            flag,
+            dest=dest,
+            action=argparse.BooleanOptionalAction,
+            default=default,
+            help=help_msg,
+        )
     elif data_type == "list":
         nargs   = entry.get("nargs", "*")
         metavar = entry.get("metavar")

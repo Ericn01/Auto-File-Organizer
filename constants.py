@@ -1,10 +1,17 @@
+import os 
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+EXTENSION_MAPPING_PATH = os.path.join(SCRIPT_DIR, 'mapping.json')
+ARG_CONFIG_PATH = os.path.join(SCRIPT_DIR, 'args.json')
+
 DEFAULT_ARG_CONFIG : dict[str, list[dict]] = {
     "run": [
         {
             "flag":    "--mapping",
             "dest":    "mapping",
-            "type":    "str",
-            "default": "./mapping.json",
+            "type":    "str", 
+            "default": EXTENSION_MAPPING_PATH,
             "help":    "Path to the JSON file containing extension mappings."
         },
         {

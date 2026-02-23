@@ -30,7 +30,7 @@ class TestConfiguration(unittest.TestCase):
 
             configuration.update_arg_config("max_depth", "default", 3, filepath=str(cfg))
             loaded = configuration.load_arg_config(filepath=str(cfg))
-            entry = next(e for e in loaded if e["dest"] == "max_depth")
+            entry = next(e for e in loaded["run"] if e["dest"] == "max_depth")
             self.assertEqual(entry["default"], 3)
 
     def test_update_arg_config_raises_for_missing_dest(self):
@@ -51,4 +51,3 @@ class TestConfiguration(unittest.TestCase):
                 yield Path(d)
 
         return _ctx()
-
