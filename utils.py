@@ -27,7 +27,7 @@ def parse_size (size_str : str):
     """Parses a string size (e.g., 100MB, 2GB) into bytes."""
     units = {"B": 1, "KB": 1024, "MB": 1024 ** 2, "GB": 1024**3, "TB": 1024**4}
     size_str = size_str.upper() 
-    match = re.match(r"^(\d+(?:\.\d+)?)\s*([KMGT]B)$", size_str)
+    match = re.match(r"^(\d+(?:\.\d+)?)\s*([KMGT]*B)$", size_str)
 
     if not match:
         try:

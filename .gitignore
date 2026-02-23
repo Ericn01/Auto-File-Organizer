@@ -5,7 +5,7 @@ __pycache__/
 
 # Other
 example-test
-args*
+args.json 
 
 # Distribution / packaging
 .Python
